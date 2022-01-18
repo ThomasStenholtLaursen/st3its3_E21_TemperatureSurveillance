@@ -40,20 +40,13 @@ namespace TemperatureSurveillance.Application
                 double Alarmtemp = SensorConfig.TemperatureAlarm[i];
                 string placement = SensorConfig.SensorPlacement[i];
                 string sensortype = SensorConfig.SensorType;
-                sensorList.Add(SensorFactory.CreateSensor(sensortype, placement, i+1 , Alarmtemp));
-            }
-
-            //var sensor1 = new ThermalCamera("Entrance", 10, 38.4);
-            //var sensor2 = new ThermalCamera("Backdoor", 11, 20.4);
-            //var sensor3 = new ThermalCamera("Canteen", 12, 42.1);
-            //sensorList.Add(sensor1);
-            //sensorList.Add(sensor2);
-            //sensorList.Add(sensor3);
+                sensorList.Add(SensorFactory.CreateSensor(sensortype, placement, 10+i , Alarmtemp));
+            }                      
             
 
-            var correctionType = new AmbientCorrection();
-            var logType = new DisplayLog();
-            var alarmType = new LightAlarm();
+            var correctionType = new AmbientCorrection(); //default
+            var logType = new DisplayLog(); //default
+            var alarmType = new LightAlarm(); //default
 
             
             var temperatureMonitor = new TemperatureMonitor(dataQueue, correctionType);

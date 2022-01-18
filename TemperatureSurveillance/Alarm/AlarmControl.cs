@@ -9,9 +9,9 @@ namespace TemperatureSurveillance.Alarm
 {
     public class AlarmControl : ITemperatureObserver
     {
-        private readonly TemperatureMonitor _tempSource;
-        
+        private readonly TemperatureMonitor _tempSource;        
         public IAlarm AlarmType { get; set; }
+
         public AlarmControl(IAlarm alarmType, TemperatureMonitor tempSource)
         {
             AlarmType = alarmType;
@@ -24,6 +24,7 @@ namespace TemperatureSurveillance.Alarm
             if (_tempSource.CorrectedTemperature > _tempSource.AlarmTemperature)
             {
                 AlarmType.On();
+                
             }
             else
             {

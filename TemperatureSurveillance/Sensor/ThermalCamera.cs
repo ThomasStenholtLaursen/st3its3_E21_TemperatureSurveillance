@@ -8,11 +8,11 @@ namespace TemperatureSurveillance.Sensor
 {
     public class ThermalCamera : ISensor
     {
-        private readonly Random _random = new Random();
         public string Placement { get; set; }
         public int ID { get; set; }
         public double AlarmTemperature { get; set; }
 
+        private readonly Random _random = new Random();
         private readonly AmbientTemperature _ambient = new AmbientTemperature();
 
         public ThermalCamera(string placement, int id, double alarmTemp)
