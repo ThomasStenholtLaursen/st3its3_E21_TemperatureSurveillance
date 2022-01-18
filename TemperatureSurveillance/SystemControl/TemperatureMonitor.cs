@@ -11,19 +11,21 @@ namespace TemperatureSurveillance.SystemControl
 {
     public class TemperatureMonitor : TemperatureSubject
     {
-        private bool _active = false;
+        private bool _active = true;
         private readonly BlockingCollection<TemperatureDataContainer> _dataQueue;
         public double TemperatureSample { get; private set; } 
         public double AmbientTemperature { get; private set; }
         public double CorrectedTemperature { get; private set; }
+        public double AlarmTemperature { get; private set; }
         public string Placement { get; set; }
         public int ID { get; set; }
 
-        private ICorrect _correction = new AmbientCorrection();
+        private ICorrect _correction;
 
-        public TemperatureMonitor(BlockingCollection<TemperatureDataContainer> dataQueue)
+        public TemperatureMonitor(BlockingCollection<TemperatureDataContainer> dataQueue, ICorrect correction)
         {
             _dataQueue = dataQueue;
+            _correction = correction;
         }
 
         public void Run()
@@ -59,7 +61,7 @@ namespace TemperatureSurveillance.SystemControl
             _active = false;
             _dataQueue.Take();
 
-            Console.WriteLine("Stopped!");
+            //Console.WriteLine("Stopped!");
         }
 
         public void Start()
@@ -71,6 +73,7 @@ namespace TemperatureSurveillance.SystemControl
             AmbientTemperature = container.AmbientTemperature;
             ID = container.ID;
             Placement = container.Placement;
+            AlarmTemperature = container.AlarmTemperature;
 
             CorrectedTemperature = _correction.Correct(TemperatureSample, AmbientTemperature);
 

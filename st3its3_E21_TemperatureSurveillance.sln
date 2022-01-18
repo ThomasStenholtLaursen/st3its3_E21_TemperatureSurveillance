@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TemperatureSurveillance.App
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TemperatureSurveillance", "TemperatureSurveillance\TemperatureSurveillance.csproj", "{E1C69C26-4FA1-4677-8982-98D306A8E449}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject1", "TestProject1\TestProject1.csproj", "{9DFEC1EB-1A74-4F30-A776-F8C4F194F9B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTest", "TestProject1\UnitTest.csproj", "{9DFEC1EB-1A74-4F30-A776-F8C4F194F9B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

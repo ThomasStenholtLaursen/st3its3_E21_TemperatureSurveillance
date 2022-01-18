@@ -41,6 +41,7 @@ namespace TemperatureSurveillance.Sensor
                 container.AmbientTemperature = _temperatureDTO.AmbientTemperature;
                 container.ID = sensor.ID;
                 container.Placement = sensor.Placement;
+                container.AlarmTemperature = sensor.AlarmTemperature;
                 _dataQueue.Add(container);
             }
         }

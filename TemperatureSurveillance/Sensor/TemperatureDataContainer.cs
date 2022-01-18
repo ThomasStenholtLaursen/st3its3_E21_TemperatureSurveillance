@@ -12,5 +12,6 @@ namespace TemperatureSurveillance.Sensor
         public int ID { get; set; }
         public double TemperatureSample { get; set; }
         public double AmbientTemperature { get; set; }
+        public double AlarmTemperature { get; set; }
     }
 }

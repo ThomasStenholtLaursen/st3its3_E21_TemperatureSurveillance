@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
 using System.Threading;
 using TemperatureSurveillance.Alarm;
 using TemperatureSurveillance.Log;
 using TemperatureSurveillance.Sensor;
+using TemperatureSurveillance.SensorConfig;
 using TemperatureSurveillance.SystemControl;
+using TemperatureSurveillance.TempCorrection; 
 
 namespace TemperatureSurveillance.Application
 {
@@ -13,24 +17,48 @@ namespace TemperatureSurveillance.Application
     {
         static void Main(string[] args)
         {
+            #region Creation of JSON file for configuration
+            //ProgramConfiguration configDefault = new ProgramConfiguration();
+            //string configFilename = "SensorConfig.json";
+            //string json = JsonSerializer.Serialize(configDefault);
+            //File.WriteAllText(configFilename, json);
+            #endregion
+
+
             BlockingCollection<TemperatureDataContainer> dataQueue =
                 new BlockingCollection<TemperatureDataContainer>();
 
-            
-
-            var sensor1 = new ThermalCamera("Entrance", 10);
             List<ISensor> sensorList = new List<ISensor>();
-            sensorList.Add(sensor1);
+
+            var SensorConfig = new ProgramConfiguration();
+            var ConfigControl = new ConfigurationControl();
+            string filename = "SensorConfig.json";
+            SensorConfig = ConfigControl.Load(SensorConfig, filename);
+
+            for (int i = 0; i < SensorConfig.TemperatureAlarm.Count; i++)
+            {
+                double Alarmtemp = SensorConfig.TemperatureAlarm[i];
+                string placement = SensorConfig.SensorPlacement[i];
+                string sensortype = SensorConfig.SensorType;
+                sensorList.Add(SensorFactory.CreateSensor(sensortype, placement, i+1 , Alarmtemp));
+            }
+
+            //var sensor1 = new ThermalCamera("Entrance", 10, 38.4);
+            //var sensor2 = new ThermalCamera("Backdoor", 11, 20.4);
+            //var sensor3 = new ThermalCamera("Canteen", 12, 42.1);
+            //sensorList.Add(sensor1);
+            //sensorList.Add(sensor2);
+            //sensorList.Add(sensor3);
             
 
-
-            var sensorControl = new SensorControl(dataQueue, sensorList);
-            var temperatureMonitor = new TemperatureMonitor(dataQueue);
-
+            var correctionType = new AmbientCorrection();
             var logType = new DisplayLog();
-            var logControl = new LogControl(logType, temperatureMonitor);
-
             var alarmType = new LightAlarm();
+
+            
+            var temperatureMonitor = new TemperatureMonitor(dataQueue, correctionType);
+            var sensorControl = new SensorControl(dataQueue, sensorList);
+            var logControl = new LogControl(logType, temperatureMonitor);            
             var alarmControl = new AlarmControl(alarmType, temperatureMonitor);
 
             var producerThread = new Thread(sensorControl.Run);

@@ -10,12 +10,12 @@ namespace TemperatureSurveillance.Alarm
     {
         public void On()
         {
-            Console.Write(" - BZZZ BZZZ\n");
+            Console.WriteLine("(BZZZ BZZZ)\n");
         }
 
         public void Off()
         {
-            Console.Write(" - *silence*\n");
+            Console.WriteLine("(*silence*)\n");
         }
     }
 }

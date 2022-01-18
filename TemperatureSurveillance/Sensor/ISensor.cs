@@ -10,6 +10,8 @@ namespace TemperatureSurveillance.Sensor
     {
         TemperatureDTO Detect();
         string Placement { get; set; }
+        double AlarmTemperature { get; set; }
         int ID { get; set; }
+
     }
 }

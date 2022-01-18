@@ -10,12 +10,12 @@ namespace TemperatureSurveillance.Alarm
     {
         public void On()
         {
-            Console.Write(" - ALARM! RED LED ON!\n");
+            Console.WriteLine("(ALARM! RED LED ON!)\n");
         }
 
         public void Off()
         {
-            Console.Write(" - Clear!\n");
+            Console.WriteLine("(Clear!)\n");
         }
     }
 }
