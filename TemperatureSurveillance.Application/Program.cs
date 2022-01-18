@@ -8,6 +8,7 @@ using TemperatureSurveillance.Alarm;
 using TemperatureSurveillance.Log;
 using TemperatureSurveillance.Sensor;
 using TemperatureSurveillance.SensorConfig;
+using TemperatureSurveillance.Statistics;
 using TemperatureSurveillance.SystemControl;
 using TemperatureSurveillance.TempCorrection; 
 
@@ -47,12 +48,14 @@ namespace TemperatureSurveillance.Application
             var correctionType = new AmbientCorrection(); //default
             var logType = new DisplayLog(); //default
             var alarmType = new LightAlarm(); //default
+            var statisticsType = new Counter(); //default
 
-            
+
             var temperatureMonitor = new TemperatureMonitor(dataQueue, correctionType);
             var sensorControl = new SensorControl(dataQueue, sensorList);
             var logControl = new LogControl(logType, temperatureMonitor);            
             var alarmControl = new AlarmControl(alarmType, temperatureMonitor);
+            var statisticsControl = new StatisticsControl(temperatureMonitor, statisticsType);
 
             var producerThread = new Thread(sensorControl.Run);
             producerThread.IsBackground = true;
@@ -70,6 +73,7 @@ namespace TemperatureSurveillance.Application
             Console.WriteLine("[H]    Stop");
             Console.WriteLine("[B]    Buzzer Alarm");
             Console.WriteLine("[L]    Light Alarm");
+            Console.WriteLine("[S]    Statistics Report");
             Console.WriteLine("-------------------\n");
 
             var cont = true;
@@ -97,6 +101,10 @@ namespace TemperatureSurveillance.Application
                     case 'l':
                     case 'L':
                         alarmControl.AlarmType = new LightAlarm();
+                        break;
+                    case 's':
+                    case 'S':
+                        statisticsControl.PrintStatistics(30, 2);                        
                         break;
                 }
             }

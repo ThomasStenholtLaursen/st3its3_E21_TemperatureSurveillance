@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TemperatureSurveillance.Sensor;
+using TemperatureSurveillance.Statistics;
 using TemperatureSurveillance.TempCorrection;
 
 namespace TemperatureSurveillance.SystemControl
@@ -12,6 +13,7 @@ namespace TemperatureSurveillance.SystemControl
     public class TemperatureMonitor : TemperatureSubject
     {
         private bool _active = true;
+
         private readonly BlockingCollection<TemperatureDataContainer> _dataQueue;
         public double TemperatureSample { get; private set; } 
         public double AmbientTemperature { get; private set; }
@@ -19,6 +21,8 @@ namespace TemperatureSurveillance.SystemControl
         public double AlarmTemperature { get; private set; }
         public string Placement { get; set; }
         public int ID { get; set; }
+        public List<StatisticsDTO> _statisticsDTO { get; set; }
+        
 
         private ICorrect _correction;
 
@@ -26,6 +30,7 @@ namespace TemperatureSurveillance.SystemControl
         {
             _dataQueue = dataQueue;
             _correction = correction;
+            _statisticsDTO = new List<StatisticsDTO>();
         }
 
         public void Run()
@@ -58,7 +63,7 @@ namespace TemperatureSurveillance.SystemControl
 
         public void Stop()
         {
-            _active = false;
+            _active = false;                       
             _dataQueue.Take();
 
             //Console.WriteLine("Stopped!");
