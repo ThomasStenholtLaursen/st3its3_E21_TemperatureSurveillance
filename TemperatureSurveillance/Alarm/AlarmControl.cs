@@ -21,7 +21,7 @@ namespace TemperatureSurveillance.Alarm
         public void Update()
         {
             
-            if (_tempSource.TemperatureSample > 38.0)
+            if (_tempSource.CorrectedTemperature > 38.0)
             {
                 AlarmType.On();
             }

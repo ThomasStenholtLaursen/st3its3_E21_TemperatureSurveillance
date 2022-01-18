@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace TemperatureSurveillance.Sensor
 {
-    public interface ISensor
+    public class TemperatureDTO
     {
-        TemperatureDTO Detect();
-        string Placement { get; set; }
-        int ID { get; set; }
+        public double PersonTemperature { get; set; }
+        public double AmbientTemperature { get; set; }
     }
 }

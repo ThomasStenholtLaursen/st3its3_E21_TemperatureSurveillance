@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TemperatureSurveillance.Sensor;
+using TemperatureSurveillance.TempCorrection;
 
 namespace TemperatureSurveillance.SystemControl
 {
@@ -12,9 +13,13 @@ namespace TemperatureSurveillance.SystemControl
     {
         private bool _active = false;
         private readonly BlockingCollection<TemperatureDataContainer> _dataQueue;
-        public double TemperatureSample { get; private set; }
+        public double TemperatureSample { get; private set; } 
+        public double AmbientTemperature { get; private set; }
+        public double CorrectedTemperature { get; private set; }
         public string Placement { get; set; }
         public int ID { get; set; }
+
+        private ICorrect _correction = new AmbientCorrection();
 
         public TemperatureMonitor(BlockingCollection<TemperatureDataContainer> dataQueue)
         {
@@ -63,8 +68,11 @@ namespace TemperatureSurveillance.SystemControl
 
             var container = _dataQueue.Take();
             TemperatureSample = container.TemperatureSample;
+            AmbientTemperature = container.AmbientTemperature;
             ID = container.ID;
             Placement = container.Placement;
+
+            CorrectedTemperature = _correction.Correct(TemperatureSample, AmbientTemperature);
 
             Notify();
         }

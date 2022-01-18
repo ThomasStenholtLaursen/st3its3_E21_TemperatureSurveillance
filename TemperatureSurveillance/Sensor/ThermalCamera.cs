@@ -12,16 +12,23 @@ namespace TemperatureSurveillance.Sensor
         public string Placement { get; set; }
         public int ID { get; set; }
 
+        private readonly AmbientTemperature _ambient = new AmbientTemperature();
+
         public ThermalCamera(string placement, int id)
         {
             Placement = placement;
             ID = id;
         }
-        public double Detect()
+        public TemperatureDTO Detect()
         {
-            var next = _random.NextDouble();
-            //return Math.Round((34.0 + (next * (42.5 - 34.0))),1);
-            return (34.0 + (next * (42.5 - 34.0)));
+            TemperatureDTO dto = new TemperatureDTO();
+            double persontemp = (34.0 + (_random.NextDouble() * (42.5 - 34.0)));
+            double ambienttemp = _ambient.GetAmbientTemp();
+
+            dto.PersonTemperature = persontemp; 
+            dto.AmbientTemperature = ambienttemp;
+
+            return dto;
         }
 
         

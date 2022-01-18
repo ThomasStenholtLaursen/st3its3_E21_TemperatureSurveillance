@@ -10,10 +10,11 @@ namespace TemperatureSurveillance.Sensor
 {
     public class SensorControl 
     {
-        private const int _sampleTime = 1000;
+        private const int _sampleTime = 100;
 
         private readonly BlockingCollection<TemperatureDataContainer> _dataQueue;
         private readonly List<ISensor> _sensors;
+        private TemperatureDTO _temperatureDTO;
 
         public SensorControl(BlockingCollection<TemperatureDataContainer> dataQueue, List<ISensor> sensors)
         {
@@ -35,7 +36,9 @@ namespace TemperatureSurveillance.Sensor
             foreach (var sensor in sensorList)
             {
                 TemperatureDataContainer container = new TemperatureDataContainer();
-                container.TemperatureSample = sensor.Detect();
+                _temperatureDTO = sensor.Detect();
+                container.TemperatureSample = _temperatureDTO.PersonTemperature;
+                container.AmbientTemperature = _temperatureDTO.AmbientTemperature;
                 container.ID = sensor.ID;
                 container.Placement = sensor.Placement;
                 _dataQueue.Add(container);
