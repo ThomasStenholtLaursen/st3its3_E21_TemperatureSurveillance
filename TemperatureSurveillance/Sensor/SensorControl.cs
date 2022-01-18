@@ -10,7 +10,7 @@ namespace TemperatureSurveillance.Sensor
 {
     public class SensorControl 
     {
-        private const int _sampleTime = 100;
+        private const int _sampleTime = 1000;
 
         private readonly BlockingCollection<TemperatureDataContainer> _dataQueue;
         private readonly List<ISensor> _sensors;
