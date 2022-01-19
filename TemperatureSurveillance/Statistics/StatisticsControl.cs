@@ -27,14 +27,14 @@ namespace TemperatureSurveillance.Statistics
                 StatisticsDTO dto = new StatisticsDTO();                
                 dto.ID = _tempSource.ID;
                 dto.Time = DateTime.Now;
-                _tempSource._statisticsDTO.Add(dto);
+                _tempSource.StatisticsDTO.Add(dto);
             }
         }
 
         public void PrintStatistics(int lastSeconds, int lastMinutes)
         {
-            List<StatisticsDTO> secDTO = StatisticsType.CalculateStatistics(lastSeconds, 0, _tempSource._statisticsDTO);
-            List<StatisticsDTO> minDTO = StatisticsType.CalculateStatistics(0, lastMinutes, _tempSource._statisticsDTO);
+            List<StatisticsDTO> secDTO = StatisticsType.CalculateStatistics(lastSeconds, 0, _tempSource.StatisticsDTO);
+            List<StatisticsDTO> minDTO = StatisticsType.CalculateStatistics(0, lastMinutes, _tempSource.StatisticsDTO);
 
             var totalalarm1 = 0;
             var totalalarm2 = 0;

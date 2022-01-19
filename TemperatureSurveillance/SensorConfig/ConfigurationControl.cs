@@ -57,7 +57,6 @@ namespace TemperatureSurveillance.SensorConfig
 
         public List<double> TemperatureAlarm { get; set; }
         public List<string> SensorPlacement { get; set; }
-
         public string SensorType { get; set; }
         
     }

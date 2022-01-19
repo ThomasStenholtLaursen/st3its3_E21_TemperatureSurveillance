@@ -21,8 +21,7 @@ namespace TemperatureSurveillance.SystemControl
         public double AlarmTemperature { get; private set; }
         public string Placement { get; set; }
         public int ID { get; set; }
-        public List<StatisticsDTO> _statisticsDTO { get; set; }
-        
+        public List<StatisticsDTO> StatisticsDTO { get; set; }        
 
         private ICorrect _correction;
 
@@ -30,7 +29,7 @@ namespace TemperatureSurveillance.SystemControl
         {
             _dataQueue = dataQueue;
             _correction = correction;
-            _statisticsDTO = new List<StatisticsDTO>();
+            StatisticsDTO = new List<StatisticsDTO>();
         }
 
         public void Run()
