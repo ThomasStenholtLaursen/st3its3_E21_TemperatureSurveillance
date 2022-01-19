@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using TemperatureSurveillance.TempCorrection;
 
-namespace TestProject1
+namespace UnitTest.Correction
 {
     [TestFixture]
     class AmbientCorrectionTest

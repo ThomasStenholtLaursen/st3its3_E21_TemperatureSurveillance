@@ -9,8 +9,8 @@ namespace TemperatureSurveillance.Sensor
     public class AmbientTemperature
     {
         private readonly Random _random = new Random();
-        private double min_val = -10;
-        private double max_val = 35;
+        private const double min_val = -10;
+        private const double max_val = 35;
         public double GetAmbientTemp()
         {
             var next = _random.NextDouble();

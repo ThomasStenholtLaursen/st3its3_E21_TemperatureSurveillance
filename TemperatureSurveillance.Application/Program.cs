@@ -25,7 +25,6 @@ namespace TemperatureSurveillance.Application
             //File.WriteAllText(configFilename, json);
             #endregion
 
-
             BlockingCollection<TemperatureDataContainer> dataQueue =
                 new BlockingCollection<TemperatureDataContainer>();
 
@@ -48,14 +47,14 @@ namespace TemperatureSurveillance.Application
             var correctionType = new AmbientCorrection(); //default
             var logType = new DisplayLog(); //default
             var alarmType = new LightAlarm(); //default
-            var statisticsType = new Counter(); //default
+            var statisticsType = new AlarmStatistics(); //default
 
 
             var temperatureMonitor = new TemperatureMonitor(dataQueue, correctionType);
             var sensorControl = new SensorControl(dataQueue, sensorList);
             var logControl = new LogControl(logType, temperatureMonitor);            
             var alarmControl = new AlarmControl(alarmType, temperatureMonitor);
-            var statisticsControl = new StatisticsControl(temperatureMonitor, statisticsType);
+            var statisticsControl = new StatisticsControl(statisticsType, temperatureMonitor);
 
             var producerThread = new Thread(sensorControl.Run);
             producerThread.IsBackground = true;

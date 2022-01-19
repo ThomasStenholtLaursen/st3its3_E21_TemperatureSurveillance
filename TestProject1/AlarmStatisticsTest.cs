@@ -4,17 +4,17 @@ using System.Collections.Generic;
 using TemperatureSurveillance.Statistics;
 using TemperatureSurveillance.TempCorrection;
 
-namespace TestProject1
+namespace UnitTest.Statistics
 {
     [TestFixture]
-    class StatisticTest
+    class AlarmStatisticsTest
     {
-        private Counter _uut;
+        private AlarmStatistics _uut;
 
         [SetUp]
         public void Setup()
         {
-            _uut = new Counter();
+            _uut = new AlarmStatistics();
         }
 
         private List<StatisticsDTO> CreateDTOList1()
@@ -70,7 +70,7 @@ namespace TestProject1
 
 
             return list;
-        }
+        }       
 
         private List<StatisticsDTO> CreateDTOList3()
         {
@@ -126,7 +126,7 @@ namespace TestProject1
             dto3.ID = 10;
             dto4.ID = 12;
             dto5.ID = 11;
-            dto6.ID = 11;            
+            dto6.ID = 11;
 
             dto1.Time = new DateTime();
             dto2.Time = new DateTime();
@@ -146,13 +146,41 @@ namespace TestProject1
             return list;
         }
 
+        private List<StatisticsDTO> CreateDTOList5()
+        {
+            List<StatisticsDTO> list = new List<StatisticsDTO>();
+
+            for (int i = 0; i < 20; i++)
+            {
+
+                StatisticsDTO dto = new StatisticsDTO();
+
+                dto.ID = 10+i;
+                dto.Time = DateTime.Now;
+                list.Add(dto);
+            }
+
+
+            return list;
+        }
+
         [Test]
-        public void StatisticsSecoundsTest_TotalAlarms20_AlarmOnlyFromSensorID10_Plus_CheckOfSensorID()
+        public void AlarmStatisticsTest_ListContainsTwentyDTO_onlyOneReturnedDueToIdenticalID()
         {
             var list = CreateDTOList1();
-            var output = _uut.CalculateStatisticsSeconds(30, list);
+            var output = _uut.CalculateStatistics(30, 0, list);
+
+            Assert.That(output.Count, Is.EqualTo(1));
+
+        }
+
+        [Test]
+        public void AlarmStatisticsTest_TotalAlarmsTwenty_OnlyOneDTOReturned_IDisTen()
+        {
+            var list = CreateDTOList1();
+            var output = _uut.CalculateStatistics(30, 0, list);
             var totalAlarms = 0;
-            var ID = 0;
+
             foreach (var item in output)
             {
                 totalAlarms += item.NumberOfAlarms;
@@ -160,18 +188,16 @@ namespace TestProject1
 
             Assert.That(totalAlarms, Is.EqualTo(20));
             Assert.That(output[0].NumberOfAlarms, Is.EqualTo(20));
+            Assert.That(output.Count, Is.EqualTo(1));
             Assert.That(output[0].ID, Is.EqualTo(10));
-            Assert.That(output[1].NumberOfAlarms, Is.EqualTo(0));
-            Assert.That(output[1].ID, Is.EqualTo(11));
-            Assert.That(output[2].NumberOfAlarms, Is.EqualTo(0));
-            Assert.That(output[2].ID, Is.EqualTo(12));
+
         }
 
         [Test]
-        public void StatisticsSecoundsTest_DifferentSensorsTriggersAlarm_TotalAlarmsIs20()
+        public void AlarmStatisticsTest_DifferentSensorsTriggersAlarm_TotalAlarmsIsSix()
         {
             var list = CreateDTOList2();
-            var output = _uut.CalculateStatisticsSeconds(30, list);
+            var output = _uut.CalculateStatistics(30, 0, list);
             var totalAlarms = 0;
 
             foreach (var item in output)
@@ -183,10 +209,10 @@ namespace TestProject1
         }
 
         [Test]
-        public void StatisticsSecoundsTest_TimespanIsGreaterThan30Seconds_NoAlarmTriggers()
+        public void AlarmStatisticsTestSeconds_TimespanIsGreaterThan30Seconds_NoAlarmTriggers()
         {
             var list = CreateDTOList3();
-            var output = _uut.CalculateStatisticsSeconds(30, list);
+            var output = _uut.CalculateStatistics(30, 0, list);
             var totalAlarms = 0;
 
             foreach (var item in output)
@@ -198,10 +224,26 @@ namespace TestProject1
         }
 
         [Test]
-        public void StatisticsMinutesTest_HalfOFTimespanIsGreaterThan2Minutes_3AlarmTriggers()
+        public void AlarmStatisticsTestMinutes_TimespanIsGreaterThan30Seconds_NoAlarmTriggers()
+        {
+            var list = CreateDTOList3();
+            var output = _uut.CalculateStatistics(0, 2, list);
+            var totalAlarms = 0;
+
+            foreach (var item in output)
+            {
+                totalAlarms += item.NumberOfAlarms;
+            }
+
+            Assert.That(totalAlarms, Is.EqualTo(0));
+        }
+
+
+        [Test]
+        public void AlarmStatisticsTest_HalfOFTimespanIsGreaterThan2Minutes_3AlarmTriggers()
         {
             var list = CreateDTOList4();
-            var output = _uut.CalculateStatisticsMinutes(2, list);
+            var output = _uut.CalculateStatistics(0, 2, list);
             var totalAlarms = 0;
 
             foreach (var item in output)
@@ -211,6 +253,15 @@ namespace TestProject1
 
             Assert.That(totalAlarms, Is.EqualTo(3));
         }
+
+        [Test]
+        public void AlarmStatisticsTest_SensorWithDifferentID_LengthOfReturnedDTOListIsTwenty()
+        {
+            var list = CreateDTOList5();
+            var output = _uut.CalculateStatistics(30, 0, list);
+
+            Assert.That(output.Count, Is.EqualTo(20));
+        }        
 
     }
 }

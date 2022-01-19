@@ -8,7 +8,6 @@ namespace TemperatureSurveillance.Statistics
 {
     public interface IStatistics
     {
-        List<StatisticsDTO> CalculateStatisticsSeconds(int sec, List<StatisticsDTO> list);
-        List<StatisticsDTO> CalculateStatisticsMinutes(int min, List<StatisticsDTO> list);
+        List<StatisticsDTO> CalculateStatistics(int sec, int min, List<StatisticsDTO> list);        
     }
 }

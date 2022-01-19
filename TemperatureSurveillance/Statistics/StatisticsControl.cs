@@ -11,13 +11,13 @@ namespace TemperatureSurveillance.Statistics
     {
 
         private readonly TemperatureMonitor _tempSource;
-        public IStatistics _statisticsType { get; set; }
+        public IStatistics StatisticsType { get; set; }
 
-        public StatisticsControl(TemperatureMonitor tempSource, IStatistics statisticsType)
+        public StatisticsControl(IStatistics statisticsType, TemperatureMonitor tempSource)
         {
             _tempSource = tempSource;
             _tempSource.Attach(this);
-            _statisticsType = statisticsType;
+            StatisticsType = statisticsType;
 
         }
         public void Update()
@@ -33,8 +33,8 @@ namespace TemperatureSurveillance.Statistics
 
         public void PrintStatistics(int lastSeconds, int lastMinutes)
         {
-            List<StatisticsDTO> secDTO = _statisticsType.CalculateStatisticsMinutes(2, _tempSource._statisticsDTO);
-            List<StatisticsDTO> minDTO = _statisticsType.CalculateStatisticsSeconds(30, _tempSource._statisticsDTO);
+            List<StatisticsDTO> secDTO = StatisticsType.CalculateStatistics(lastSeconds, 0, _tempSource._statisticsDTO);
+            List<StatisticsDTO> minDTO = StatisticsType.CalculateStatistics(0, lastMinutes, _tempSource._statisticsDTO);
 
             var totalalarm1 = 0;
             var totalalarm2 = 0;
@@ -49,19 +49,37 @@ namespace TemperatureSurveillance.Statistics
                 totalalarm2 += item.NumberOfAlarms;
             }
             
-            Console.WriteLine("---------------STATISTICS-----------------------");
-            Console.WriteLine("Total number of alarms in the last 30 sek: " + totalalarm1);
+            Console.WriteLine("------------------STATISTICS-----------------------");
+            Console.WriteLine("Total triggered alarms in the last " + lastSeconds + " secounds: " + totalalarm1);
             for (int i = 0; i < secDTO.Count; i++)
             {
-                Console.WriteLine("Camera[" + secDTO[i].ID + "] triggered an alarm " + secDTO[i].NumberOfAlarms + " times");
+                var timestring = "";
+                if (secDTO[i].NumberOfAlarms <= 1)
+                {
+                    timestring = "time";
+                }
+                else
+                {
+                    timestring = "times";
+                }
+                Console.WriteLine("Camera[" + secDTO[i].ID + "] triggered an alarm " + secDTO[i].NumberOfAlarms + " " + timestring);
             }
             
-            Console.WriteLine("\nTotal number of alarms in the last 2 min: " + totalalarm2);
+            Console.WriteLine("\nTotal triggered alarms in the last " + lastMinutes + " minutes: " + totalalarm2);
             for (int i = 0; i < minDTO.Count; i++)
             {
-                Console.WriteLine("Camera[" + minDTO[i].ID + "] triggered an alarm " + minDTO[i].NumberOfAlarms + " times");
+                var timestring = "";
+                if (minDTO[i].NumberOfAlarms <= 1)
+                {
+                    timestring = "time";
+                }
+                else
+                {
+                    timestring = "times";
+                }
+                Console.WriteLine("Camera[" + minDTO[i].ID + "] triggered an alarm " + minDTO[i].NumberOfAlarms + " " + timestring);
             }
-            Console.WriteLine("------------------------------------------------\n");
+            Console.WriteLine("---------------------------------------------------\n");
         }
     }
 }

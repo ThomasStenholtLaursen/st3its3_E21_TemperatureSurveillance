@@ -15,7 +15,6 @@ namespace TemperatureSurveillance.TempCorrection
 
             try
             {
-                
                 if (ambientTemp >= -10.0 && ambientTemp <= -5.1) return (_personTemp += 3);
                 if (ambientTemp >= -5.0 && ambientTemp <= -0.1) return (_personTemp += 2.5);
                 if (ambientTemp >= 0.0 && ambientTemp <= 4.9) return(_personTemp += 2.0);
@@ -28,7 +27,7 @@ namespace TemperatureSurveillance.TempCorrection
             }
             catch (Exception e)
             {
-                Console.WriteLine("Could not correct!");                
+                Console.WriteLine("Could not correct!\n\n" + e);                
             }
 
             return 10000;
