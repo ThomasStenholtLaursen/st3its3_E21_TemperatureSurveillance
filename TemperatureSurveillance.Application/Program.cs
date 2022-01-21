@@ -37,10 +37,10 @@ namespace TemperatureSurveillance.Application
 
             for (int i = 0; i < SensorConfig.TemperatureAlarm.Count; i++)
             {
-                double Alarmtemp = SensorConfig.TemperatureAlarm[i];
+                double alarmtemp = SensorConfig.TemperatureAlarm[i];
                 string placement = SensorConfig.SensorPlacement[i];
                 string sensortype = SensorConfig.SensorType;
-                sensorList.Add(SensorFactory.CreateSensor(sensortype, placement, 10+i , Alarmtemp));
+                sensorList.Add(SensorFactory.CreateSensor(sensortype, placement, 10+i , alarmtemp));
             }                      
             
 
@@ -55,6 +55,7 @@ namespace TemperatureSurveillance.Application
             var logControl = new LogControl(logType, temperatureMonitor);            
             var alarmControl = new AlarmControl(alarmType, temperatureMonitor);
             var statisticsControl = new StatisticsControl(statisticsType, temperatureMonitor);
+
 
             var producerThread = new Thread(sensorControl.Run);
             producerThread.IsBackground = true;

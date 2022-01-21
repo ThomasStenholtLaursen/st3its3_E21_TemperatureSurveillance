@@ -15,7 +15,6 @@ namespace TemperatureSurveillance.Sensor
                 return new ThermalCamera(placement, id, alarmtemp);
             }
 
-
             throw new ArgumentException("Unknown sensor: " + sensor);
         }
     }

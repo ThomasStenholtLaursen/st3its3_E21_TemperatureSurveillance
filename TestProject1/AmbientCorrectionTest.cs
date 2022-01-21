@@ -70,7 +70,5 @@ namespace UnitTest.Correction
 
             Assert.That(addedTemp, Is.EqualTo(-1));
         }
-
-
     }
 }

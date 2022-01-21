@@ -50,7 +50,7 @@ namespace TemperatureSurveillance.Statistics
             }
             
             Console.WriteLine("------------------STATISTICS-----------------------");
-            Console.WriteLine("Total triggered alarms in the last " + lastSeconds + " secounds: " + totalalarm1);
+            Console.WriteLine("Total triggered alarms in the last " + lastSeconds + " seconds: " + totalalarm1);
             for (int i = 0; i < secDTO.Count; i++)
             {
                 var timestring = "";

@@ -42,8 +42,7 @@ namespace TemperatureSurveillance.Statistics
                             localdto.NumberOfAlarms++;
                         }
                     }
-                }
-                
+                }                
             }
 
             return locallist;

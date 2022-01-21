@@ -12,24 +12,9 @@ namespace TemperatureSurveillance.SensorConfig
     {
         public ProgramConfiguration Load(ProgramConfiguration settings, string filename)
         {
-            try
-            {
-                string text = File.ReadAllText(filename);
-                ProgramConfiguration hospitalConfig = JsonSerializer.Deserialize<ProgramConfiguration>(text);
-                return hospitalConfig;
-            }
-            catch (Exception)
-            {
-                string oldFilename = filename + ".custom";
-                // Preserver customers file
-                File.Move(filename, oldFilename);
-                // Save new configuration
-                string json = JsonSerializer.Serialize(settings);
-                File.WriteAllText(filename, json);
-                // Notify customer
-                Console.WriteLine("Configuration file invalid, new file created. Old file can be found at: " + oldFilename);
-                return settings;
-            }
+            string text = File.ReadAllText(filename);
+            ProgramConfiguration SensorConfig = JsonSerializer.Deserialize<ProgramConfiguration>(text);
+            return SensorConfig;
         }
 
         public void Save(ProgramConfiguration settings, string path)
@@ -52,12 +37,11 @@ namespace TemperatureSurveillance.SensorConfig
             SensorPlacement.Add("Entrance");
             SensorPlacement.Add("Backdoor");
             SensorPlacement.Add("Canteen");
-            
         }
 
         public List<double> TemperatureAlarm { get; set; }
         public List<string> SensorPlacement { get; set; }
         public string SensorType { get; set; }
-        
+
     }
 }
